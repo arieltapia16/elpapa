@@ -10,7 +10,7 @@ class Modal extends React.Component {
     this.daySelection = this.daySelection.bind(this);
     const userData = JSON.parse(localStorage.user); // eslint-disable-line
     this.state = {
-      user: userData.user
+      user: userData.userName
     };
   }
 
@@ -18,7 +18,8 @@ class Modal extends React.Component {
     const obj = firebase.database().ref();
     obj.update({
       'daySelection': {
-        user: this.props.item.name
+        user: this.state.user,
+        selection: this.props.item.name
       }
     });
     this.props.ModalState(false);

@@ -31,21 +31,6 @@
   color: white;
   text-transform: uppercase; }
 
-.container-fluid {
-  height: 100vh; }
-
-.container-fluid.login-admin {
-  background-size: cover;
-  background-image: url("img/pizzaAdmin.jpg"); }
-
-.container-fluid .loginFormAdmin {
-  margin-top: 200px;
-  margin-right: 50px;
-  padding: 20px;
-  background-color: rgba(0, 0, 250, 0.5);
-  color: white;
-  text-transform: uppercase; }
-
 .imgMenu {
   transition: all 1s;
   opacity: 0.5;
