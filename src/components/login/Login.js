@@ -28,13 +28,19 @@ class App extends Component {
   submitForm () {
     const rootRef = firebase.database().ref().child('users');
     rootRef.orderByChild(this.state.user).on('value', (snapshot) => {
-      if (snapshot.child(this.state.user).child('pass').val() === this.state.pass) {
-        const user = {
-          logged: 'true',
-          userName: this.state.user
-        };
-        localStorage.setItem('user', JSON.stringify(user));
-        browserHistory.push('/dashboard');
+      let obj = snapshot.val();
+      for (var e in obj) {
+        console.log(obj[e]);
+        if (obj[e].user === this.state.user) {
+          if (obj[e].pass === this.state.pass) {
+            const user = {
+              logged: 'true',
+              userName: this.state.user
+            };
+            localStorage.setItem('user', JSON.stringify(user));
+            browserHistory.push('/dashboard');
+          }
+        }
       }
     });
   }
@@ -42,15 +48,17 @@ class App extends Component {
     return (
       <div className='container-fluid login'>
         <div className='loginForm col-md-3 pull-right'>
-          <div className='form-group'>
-            <label htmlFor='user'>Usuario</label>
-            <input type='text' className='form-control' value={this.state.user} onChange={this.changeUser} id='user' placeholder='Nombre de Usuario' />
-          </div>
-          <div className='form-group'>
-            <label htmlFor='pass'>Password</label>
-            <input type='password' className='form-control' value={this.state.pass} onChange={this.changePass} id='pass' placeholder='Contraseña' />
-          </div>
-          <button className='btn btn-warning pull-right' onClick={this.submitForm}>Ingresar</button>
+          <form>
+            <div className='form-group'>
+              <label htmlFor='user'>Usuario</label>
+              <input type='text' className='form-control' value={this.state.user} onChange={this.changeUser} id='user' placeholder='Nombre de Usuario' />
+            </div>
+            <div className='form-group'>
+              <label htmlFor='pass'>Password</label>
+              <input type='password' className='form-control' value={this.state.pass} onChange={this.changePass} id='pass' placeholder='Contraseña' />
+            </div>
+            <button type='button' className='btn btn-warning pull-right' onClick={this.submitForm}>Ingresar</button>
+          </form>
         </div>
       </div>
     );

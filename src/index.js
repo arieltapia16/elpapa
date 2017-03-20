@@ -34,7 +34,7 @@ ReactDOM.render(
   <Provider store={store} >
     <Router history={browserHistory}>
       <Route path='/' component={Login} />
-      { userData.logged ? <Route path='dashboard' component={App} /> : browserHistory.push('/') }
+      { userData.logged ? <Route path='/dashboard' component={App} /> : browserHistory.push('/') }
     </Router>
   </Provider>
   ,

@@ -15,12 +15,10 @@ class Modal extends React.Component {
   }
 
   daySelection () {
-    const obj = firebase.database().ref();
-    obj.update({
-      'daySelection': {
-        user: this.state.user,
-        selection: this.props.item.name
-      }
+    const obj = firebase.database().ref().child('daySelection').child('dinners');
+    obj.push({
+      user: this.state.user,
+      selection: this.props.item.name
     });
     this.props.ModalState(false);
   }
