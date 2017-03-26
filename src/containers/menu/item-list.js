@@ -12,16 +12,7 @@ class ItemList extends Component {
     };
   }
   componentWillMount () {
-  // const obj = firebase.database().ref();
-  //   obj.update({
-  //     'users': {
-  //       'arielTapia': {
-  //           'pass': '123avapass'
-  //         }
-  //     }
-  //   });
-
-    firebase.database().ref().child('dias').child('1').child('items').on('value', (day) => {
+    firebase.database().ref().child('dias').child('2').child('items').on('value', (day) => {
       let array = [];
       day.val().forEach(function (e) {
         array.push(e);
@@ -38,13 +29,14 @@ class ItemList extends Component {
     }
     return this.state.dayArray.map((item, i) => {
       return (
-        <div
+        <a
           key={i}
           className={colSize + ' img-container'}
           onClick={() => { this.props.selectMenuItem(item); this.props.ModalState(true); }}
           >
-          <img className='imgMenu' alt='' src={require(item.img)} width='100%' />
-        </div>
+          <p>{item.name}</p>
+          <img className='imgMenu' alt='' src={item.img ? require(item.img) : ''} width='100%' />
+        </a>
       );
     });
   }

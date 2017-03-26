@@ -8,18 +8,56 @@ class Modal extends React.Component {
   constructor (props) {
     super();
     this.daySelection = this.daySelection.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     const userData = JSON.parse(localStorage.user); // eslint-disable-line
     this.state = {
+      delivery: false,
       user: userData.userName
     };
   }
+  handleInputChange (event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
 
   daySelection () {
+    const user = this.state.user;
+    const selection = this.props.item.name;
+    const menu = this.props.item.menu;
+    const delivery = this.state.delivery;
     const obj = firebase.database().ref().child('daySelection').child('dinners');
-    obj.push({
-      user: this.state.user,
-      selection: this.props.item.name
+    var exist = false;
+    obj.orderByChild('user').equalTo(user).on('value', function (snapshot) {
+      // console.log(snapshot.val());
+      snapshot.forEach(function (data) {
+        if (data.key) {
+          exist = data.key;
+        }
+      });
     });
+    if (exist) {
+      obj.child(exist).update({
+        user,
+        selection,
+        delivery,
+        menu,
+        date: Date.now()
+      });
+    } else {
+      obj.push({
+        user,
+        selection,
+        delivery,
+        menu,
+        date: Date.now()
+      });
+    }
+
     this.props.ModalState(false);
   }
 
@@ -37,18 +75,28 @@ class Modal extends React.Component {
             </div>
             <div className='modal-body'>
               <p>{this.props.item.name}</p>
+              <div className='checkbox'>
+                <label>
+                  <input
+                    name='delivery'
+                    type='checkbox'
+                    checked={this.state.isGoing}
+                    onChange={this.handleInputChange}
+                  /> Para llevar
+                </label>
+              </div>
             </div>
             <div className='modal-footer'>
               <button
                 type='button'
                 className='btn btn-default'
                 onClick={() => { this.props.ModalState(false); }}
-                >Close</button>
+                >Cerrar</button>
               <button
                 type='button'
                 className='btn btn-primary'
                 onClick={this.daySelection}
-                >Save changes</button>
+                >OK</button>
             </div>
           </div>
         </div>
