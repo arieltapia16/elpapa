@@ -30,7 +30,6 @@ class App extends Component {
     rootRef.orderByChild(this.state.user).on('value', (snapshot) => {
       let obj = snapshot.val();
       for (var e in obj) {
-        console.log(obj[e]);
         if (obj[e].user === this.state.user) {
           if (obj[e].pass === this.state.pass) {
             const user = {
