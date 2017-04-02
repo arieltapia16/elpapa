@@ -16,10 +16,6 @@ class ItemList extends Component {
   componentWillMount () {
     menuOrder();
 
-    var storage = firebase.storage();
-
-      console.log(storage.ref());
-
     firebase.database().ref().child('lastDay').child('menu').on('value', (snapshot) => {
       this.setState({
         dayMenu: snapshot.val()
@@ -56,7 +52,7 @@ class ItemList extends Component {
   }
   render () {
     return (
-      <div>
+      <div className='menuSelection'>
         {this.renderList()}
       </div>
     );

@@ -8,9 +8,15 @@ export default function () {
     if (notWeekend !== 'Saturday' && notWeekend !== 'Sunday') { // prevent add days on weekend
       const obj = snapshot.val();
       if (moment(obj.day).isBefore(moment().format('l'))) {
+        if (obj.day !== 20) {
+          var menu = +obj.menu + 1;
+        } else{
+          menu = 1;
+        }
+
         object.child('lastDay').update({
           day: moment().format('l'),
-          menu: +obj.menu + 1
+          menu
         });
         object.child('daySelection').update({
           dinners: ''

@@ -1,6 +1,6 @@
 .container-fluid{
-  height: 100vh;
   &.login{
+    height: 100vh;
     background-size: cover;
     background-image: url('img/colitaConPapas.png');
   }

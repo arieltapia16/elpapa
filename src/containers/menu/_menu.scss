@@ -1,3 +1,6 @@
+.menuSelection{
+  margin-top: 80px; 
+}
 .imgMenu{
   transition: all 1s;
   opacity:0.5;
@@ -10,6 +13,7 @@
 }
 .img-container{
   max-width: 100%;
+  cursor: pointer;
 }
 .specialForm{
   padding: 20px 0px 40px;
