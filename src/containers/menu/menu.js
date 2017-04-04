@@ -7,7 +7,7 @@ export default class Menu extends React.Component {
   render () {
     return (
       <div>
-        <SpecialItem />
+        { /*  <SpecialItem />*/ }
         <ItemList />
         <Modal />
       </div>

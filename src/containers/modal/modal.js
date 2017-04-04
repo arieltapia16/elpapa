@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {ModalState} from '../../actions'; // functions called actions
 import {bindActionCreators} from 'redux';
 import * as firebase from 'firebase';
+import moment from 'moment';
 
 class Modal extends React.Component {
   constructor (props) {
@@ -26,6 +27,7 @@ class Modal extends React.Component {
   }
 
   daySelection () {
+    const today = moment().format('l');
     const user = this.state.user;
     const selection = this.props.item.name;
     const menu = this.props.item.menu;
@@ -33,7 +35,7 @@ class Modal extends React.Component {
     const obj = firebase.database().ref().child('daySelection').child('dinners');
     var exist = false;
     obj.orderByChild('user').equalTo(user).on('value', function (snapshot) {
-      // console.log(snapshot.val());
+      console.log(snapshot.val());
       snapshot.forEach(function (data) {
         if (data.key) {
           exist = data.key;
@@ -46,7 +48,7 @@ class Modal extends React.Component {
         selection,
         delivery,
         menu,
-        date: Date.now()
+        date: today
       });
     } else {
       obj.push({
@@ -54,7 +56,7 @@ class Modal extends React.Component {
         selection,
         delivery,
         menu,
-        date: Date.now()
+        date: today
       });
     }
 

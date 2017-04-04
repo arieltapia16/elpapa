@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router';
 import App from './App';
 import Login from './components/login/Login';
+import Menu from './containers/menu/menuMonth';
 import './index.css';
 import {Provider} from 'react-redux';// very important to connect all the aplication
 import {createStore} from 'redux'; // create a store to store the reducers (REDUX)
@@ -35,6 +36,7 @@ ReactDOM.render(
     <Router history={browserHistory}>
       <Route path='/' component={Login} />
       { userData.logged ? <Route path='/dashboard' component={App} /> : browserHistory.push('/') }
+      { userData.logged ? <Route path='/menu' component={Menu} /> : browserHistory.push('/') }
     </Router>
   </Provider>
   ,
