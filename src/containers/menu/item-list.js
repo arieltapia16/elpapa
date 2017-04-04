@@ -9,7 +9,7 @@ class ItemList extends Component {
   constructor () {
     super();
     this.state = {
-      dayMenu: 1,
+      dayMenu: '',
       dayArray: []
     };
   }
@@ -17,11 +17,12 @@ class ItemList extends Component {
     menuOrder();
 
     firebase.database().ref().child('lastDay').child('menu').on('value', (snapshot) => {
-      this.setState({
-        dayMenu: snapshot.val()
-      });
 
-      firebase.database().ref().child('dias').child(this.state.dayMenu).child('items').on('value', (day) => {
+
+      const dayMenu = snapshot.val()
+
+
+      firebase.database().ref().child('dias').child(dayMenu).child('items').on('value', (day) => {
         let array = [];
         day.val().forEach(function (e) {
           array.push(e);
