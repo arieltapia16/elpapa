@@ -13,7 +13,9 @@ class Modal extends React.Component {
     const userData = JSON.parse(localStorage.user); // eslint-disable-line
     this.state = {
       delivery: false,
-      user: userData.userName
+      user: userData.userName,
+      selected: false,
+      click: 0
     };
   }
   handleInputChange (event) {
@@ -34,33 +36,45 @@ class Modal extends React.Component {
     const delivery = this.state.delivery;
     const obj = firebase.database().ref().child('daySelection').child('dinners');
     var exist = false;
-    obj.orderByChild('user').equalTo(user).on('value', function (snapshot) {
-      console.log(snapshot.val());
-      snapshot.forEach(function (data) {
-        if (data.key) {
-          exist = data.key;
-        }
+    if (this.state.click === 0) {
+      obj.orderByChild('user').equalTo(user).on('value', function (snapshot) {
+        snapshot.forEach(function (data) {
+          if (data.key) {
+            exist = data.key;
+          }
+        });
       });
-    });
-    if (exist) {
-      obj.child(exist).update({
-        user,
-        selection,
-        delivery,
-        menu,
-        date: today
-      });
-    } else {
-      obj.push({
-        user,
-        selection,
-        delivery,
-        menu,
-        date: today
-      });
-    }
+      if (exist) {
+        obj.child(exist).remove().then(function () {
+          console.log('borrado');
+          obj.push({
+            user,
+            selection,
+            delivery,
+            menu,
+            date: today
+          });
+        });
+      } else {
+        obj.push({
+          user,
+          selection,
+          delivery,
+          menu,
+          date: today
+        });
+      }
 
-    this.props.ModalState(false);
+      this.setState({
+        selected: true
+      });
+
+      this.setState({click: this.state.click + 1});
+    } else {
+      this.props.ModalState(false);
+      this.setState({selected: false});
+      this.setState({click: 0});
+    }
   }
 
   render () {
@@ -76,17 +90,22 @@ class Modal extends React.Component {
               <h4 className='modal-title'>Tu selección es:</h4>
             </div>
             <div className='modal-body'>
-              <p>{this.props.item.name}</p>
-              <div className='checkbox'>
-                <label>
-                  <input
-                    name='delivery'
-                    type='checkbox'
-                    checked={this.state.isGoing}
-                    onChange={this.handleInputChange}
-                  /> Para llevar
-                </label>
-              </div>
+              {!this.state.selected
+                ? <div>
+                  <p>{this.props.item.name}</p>
+                  <div className='checkbox'>
+                    <label>
+                      <input
+                        name='delivery'
+                        type='checkbox'
+                        checked={this.state.isGoing}
+                        onChange={this.handleInputChange}
+                      /> Para llevar
+                    </label>
+                  </div>
+                </div>
+                : <div>Seleccionaste {this.props.item.name}</div>
+              }
             </div>
             <div className='modal-footer'>
               <button
