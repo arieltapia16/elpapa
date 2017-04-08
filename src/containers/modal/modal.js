@@ -36,34 +36,34 @@ class Modal extends React.Component {
     const delivery = this.state.delivery;
     const obj = firebase.database().ref().child('daySelection').child('dinners');
     var exist = false;
+    let existArray = [];
     if (this.state.click === 0) {
       obj.orderByChild('user').equalTo(user).on('value', function (snapshot) {
         snapshot.forEach(function (data) {
           if (data.key) {
             exist = data.key;
+            existArray.push(exist);
+            console.log('exist', exist);
           }
         });
       });
+      // console.log(existArray);
       if (exist) {
-        obj.child(exist).remove().then(function () {
-          console.log('borrado');
-          obj.push({
-            user,
-            selection,
-            delivery,
-            menu,
-            date: today
-          });
-        });
-      } else {
-        obj.push({
-          user,
-          selection,
-          delivery,
-          menu,
-          date: today
+        existArray.map(function (e) {
+          obj.child(e).remove().then(
+            function () {
+              console.log('borrado');
+            }
+          );
         });
       }
+      obj.push({
+        user,
+        selection,
+        delivery,
+        menu,
+        date: today
+      });
 
       this.setState({
         selected: true
@@ -108,11 +108,14 @@ class Modal extends React.Component {
               }
             </div>
             <div className='modal-footer'>
-              <button
-                type='button'
-                className='btn btn-default'
-                onClick={() => { this.props.ModalState(false); }}
-                >Cerrar</button>
+              {!this.state.selected
+                ? <button
+                  type='button'
+                  className='btn btn-default'
+                  onClick={() => { this.props.ModalState(false); }}
+                  >Cancelar
+                  </button> : ''
+              }
               <button
                 type='button'
                 className='btn btn-primary'
