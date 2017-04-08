@@ -14,6 +14,7 @@ class Modal extends React.Component {
     this.state = {
       delivery: false,
       user: userData.userName,
+      showName: userData.showName,
       selected: false,
       click: 0
     };
@@ -31,6 +32,7 @@ class Modal extends React.Component {
   daySelection () {
     const today = moment().format('l');
     const user = this.state.user;
+    const showName = this.state.showName;
     const selection = this.props.item.name;
     const menu = this.props.item.menu;
     const delivery = this.state.delivery;
@@ -43,7 +45,6 @@ class Modal extends React.Component {
           if (data.key) {
             exist = data.key;
             existArray.push(exist);
-            console.log('exist', exist);
           }
         });
       });
@@ -59,6 +60,7 @@ class Modal extends React.Component {
       }
       obj.push({
         user,
+        showName,
         selection,
         delivery,
         menu,

@@ -34,7 +34,8 @@ class App extends Component {
           if (obj[e].pass === this.state.pass) {
             const user = {
               logged: 'true',
-              userName: this.state.user
+              userName: this.state.user,
+              showName: obj[e].name
             };
             localStorage.setItem('user', JSON.stringify(user));
             browserHistory.push('/dashboard');
