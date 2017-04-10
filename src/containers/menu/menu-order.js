@@ -8,7 +8,7 @@ export default function () {
     if (notWeekend !== 'Saturday' && notWeekend !== 'Sunday') { // prevent add days on weekend
       const obj = snapshot.val();
       if (moment(obj.day).isBefore(moment().format('l'))) {
-        if (obj.day !== 20) {
+        if (obj.day !== "20") {
           var menu = +obj.menu + 1;
         } else{
           menu = 1;
