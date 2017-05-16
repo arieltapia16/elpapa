@@ -39,6 +39,7 @@ class App extends Component {
             };
             localStorage.setItem('user', JSON.stringify(user));
             browserHistory.push('/dashboard');
+            window.location.reload;
           }
         }
       }
