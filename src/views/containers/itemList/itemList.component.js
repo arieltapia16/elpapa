@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import {selectMenuItem, ModalState} from '../../actions'; // functions called actions
+import {ModalState} from '../../../core/actions/Modal.action';
+import {selectMenuItem} from '../../../core/actions/Selection.action';
 import {bindActionCreators} from 'redux';
 import * as firebase from 'firebase';
-import menuOrder from './menu-order';
+import menuOrder from './firebase-connection';
 
 class ItemList extends Component {
   constructor () {
@@ -17,11 +18,7 @@ class ItemList extends Component {
     menuOrder();
 
     firebase.database().ref().child('lastDay').child('menu').on('value', (snapshot) => {
-
-
-      const dayMenu = snapshot.val()
-
-
+      const dayMenu = snapshot.val();
       firebase.database().ref().child('dias').child(dayMenu).child('items').on('value', (day) => {
         let array = [];
         day.val().forEach(function (e) {
@@ -42,11 +39,11 @@ class ItemList extends Component {
       return (
         <a
           key={i}
-          className={colSize + ' img-container'}
+          className={colSize + ' img-container text-center'}
           onClick={() => { this.props.selectMenuItem(item); this.props.ModalState(true); }}
           >
           <p>{item.name}</p>
-          <img className='imgMenu' alt='' src={item.img ? require('./itemPhotos/' + item.img) : ''} width='100%' />
+          <img className='imgMenu' alt='' src={item.img ? require('../../../assets/itemPhotos/' + item.img) : ''} width='90%' />
         </a>
       );
     });

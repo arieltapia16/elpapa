@@ -1,13 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router';
-import App from './App';
-import Login from './components/login/Login';
-import Menu from './containers/menu/menuMonth';
-import './index.css';
 import {Provider} from 'react-redux';// very important to connect all the aplication
-import {createStore} from 'redux'; // create a store to store the reducers (REDUX)
-import rootReducer from './reducers'; // The reducer root
+
+import App from './App';
+import Login from './views/containers/login/login.component';
+import Menu from './views/containers/menuMonth/menuMonth.component';
+import Store from './core/store';
+
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap-theme.css';
+
+import './app.css';
+
+
+
+//Firebase initialization
 import * as firebase from 'firebase';
 
 var config = {
@@ -19,26 +27,25 @@ var config = {
 };
 
 firebase.initializeApp(config);
-const store = createStore(rootReducer);
+//****************
 
 let userData = {logged: false};
 
-if (localStorage.user) {
-  userData = JSON.parse(localStorage.user); // eslint-disable-line
+if (sessionStorage.user) {
+  userData = JSON.parse(sessionStorage.user); // eslint-disable-line
 }
-if (localStorage.admin) {
-  adminData = JSON.parse(localStorage.admin); // eslint-disable-line
+if (sessionStorage.admin) {
+  adminData = JSON.parse(sessionStorage.admin); // eslint-disable-line
 }
 
 // <Provider> is use to wrap all the components and connect
 ReactDOM.render(
-  <Provider store={store} >
+  <Provider store={Store} >
     <Router history={browserHistory}>
       <Route path='/' component={Login} />
       { userData.logged ? <Route path='/dashboard' component={App} /> : browserHistory.push('/') }
       { userData.logged ? <Route path='/menu' component={Menu} /> : browserHistory.push('/') }
     </Router>
-  </Provider>
-  ,
+  </Provider>,
   document.getElementById('root')
 );

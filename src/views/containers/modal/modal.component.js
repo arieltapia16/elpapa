@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {ModalState} from '../../actions'; // functions called actions
+import {ModalState} from '../../../core/actions/Modal.action'; // functions called actions
 import {bindActionCreators} from 'redux';
 import * as firebase from 'firebase';
 import moment from 'moment';
@@ -10,7 +10,7 @@ class Modal extends React.Component {
     super();
     this.daySelection = this.daySelection.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-    const userData = JSON.parse(localStorage.user); // eslint-disable-line
+    const userData = JSON.parse(sessionStorage.user); // eslint-disable-line
     this.state = {
       delivery: false,
       user: userData.userName,
@@ -48,14 +48,9 @@ class Modal extends React.Component {
           }
         });
       });
-      // console.log(existArray);
       if (exist) {
         existArray.map(function (e) {
-          obj.child(e).remove().then(
-            function () {
-              console.log('borrado');
-            }
-          );
+          obj.child(e).remove()
         });
       }
       obj.push({
@@ -89,7 +84,10 @@ class Modal extends React.Component {
           <div className='modal-content'>
             <div className='modal-header'>
               <button type='button' className='close' onClick={() => { this.props.ModalState(false); }}><span>&times;</span></button>
-              <h4 className='modal-title'>Tu selección es:</h4>
+              <h4 className='modal-title'>
+              {!this.state.selected ?
+                "Tu selección es:" : "Buen provecho!"
+              }</h4>
             </div>
             <div className='modal-body'>
               {!this.state.selected
@@ -102,25 +100,25 @@ class Modal extends React.Component {
                         type='checkbox'
                         checked={this.state.isGoing}
                         onChange={this.handleInputChange}
-                      /> Para llevar
+                      /> Pedir para llevar
                     </label>
                   </div>
                 </div>
-                : <div>Seleccionaste {this.props.item.name}</div>
+                : <div>Ahora a aguantar hasta el mediodía</div>
               }
             </div>
             <div className='modal-footer'>
               {!this.state.selected
                 ? <button
                   type='button'
-                  className='btn btn-default'
+                  className='btn'
                   onClick={() => { this.props.ModalState(false); }}
                   >Cancelar
                   </button> : ''
               }
               <button
                 type='button'
-                className='btn btn-primary'
+                className='btn'
                 onClick={this.daySelection}
                 >OK</button>
             </div>

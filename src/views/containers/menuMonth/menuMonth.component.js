@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
-import Header from '../../components/header/header';
+
+import Header from '../../components/header/header.component';
+
 import * as firebase from 'firebase';
 
-export default class Menu extends Component {
+export default class MenuMonth extends Component {
   constructor (props) {
     super();
     this.state = {
@@ -28,7 +28,9 @@ export default class Menu extends Component {
 
     var obj = this.state.days;
     for (var e in obj) {
-      daysArray.push(obj[e]);
+      if (obj[e]) {
+        daysArray.push(obj[e]);
+      }
     }
     const menues = daysArray.map((e, i) => {
       DayNumber++;
@@ -43,16 +45,16 @@ export default class Menu extends Component {
         <tr key={i}>
           <td>{DayNumber}</td>
           <td>{e.items[0].name}</td>
-          <td><img src={e.items[0].img ? require('./itemPhotos/' + e.items[0].img) : ''} width='100px' /></td>
+          <td><img alt="optionOne" src={e.items[0].img ? require('../../../assets/itemPhotos/' + e.items[0].img) : ''} width='100px' /></td>
           <td>{e.items[1].name}</td>
-          <td><img src={e.items[1].img ? require('./itemPhotos/' + e.items[1].img) : ''} width='100px' /></td>
+          <td><img alt="optionTwo" src={e.items[1].img ? require('../../../assets/itemPhotos/' + e.items[1].img) : ''} width='100px' /></td>
         </tr>;
 
       return dayMenu;
     }
     );
     return (
-      <div className='container-fluid'>
+      <div>
         <Header />
         <div className='col-md-12'>
             <h3>Menues</h3>

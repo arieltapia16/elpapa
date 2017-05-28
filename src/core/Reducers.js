@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
-import SelectionsReducer from './reducer_selection';
-import ActiveSelectionReducer from './reducer_active_selection';
-import ModalReducer from './reducer_modal';
+import SelectionsReducer from './reducers/Selection.reducer';
+import ActiveSelectionReducer from './reducers/ActiveSelection.reducer';
+import ModalReducer from './reducers/Modal.reducer';
 
 const rootReducer = combineReducers({
   selections: SelectionsReducer,
