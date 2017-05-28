@@ -1,0 +1,39 @@
+.container-fluid.login{
+  img {
+    width: 100px;
+  }
+
+  input {
+    height: 40px;
+    border-radius: 0;
+    box-shadow: none;
+    margin-bottom: 10px;
+
+    &:focus {
+      border-color: #000000;
+    }
+
+    &:first-child {
+      margin-top: 20px;
+    }
+  }
+
+  .loginForm{
+    width: 400px;
+
+    margin-left: calc(50% - 200px);
+    margin-top: 100px;
+
+    box-shadow: #a4a4a4 0px 2px 1px;
+
+    padding: 25px;
+
+    button {
+      height: 40px;
+      background-color: #000000;
+      border-radius: 0;
+      color: white;
+      letter-spacing: 1px;
+    }
+  }
+}

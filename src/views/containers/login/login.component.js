@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
 import {browserHistory} from 'react-router';
+import logo from '../../../assets/img/logo.png';
+
 import * as firebase from 'firebase';
 
 class App extends Component {
@@ -12,20 +12,24 @@ class App extends Component {
     this.changePass = this.changePass.bind(this);
     this.state = {
       user: '',
-      pass: ''
+      pass: '',
+      invalidCredentials: false
     };
   }
   changeUser (event) {
     this.setState({
+      invalidCredentials: false,
       user: event.target.value
     });
   }
   changePass (event) {
     this.setState({
+      invalidCredentials: false,
       pass: event.target.value
     });
   }
-  submitForm () {
+  submitForm (e) {
+    e.preventDefault();
     const rootRef = firebase.database().ref().child('users');
     rootRef.orderByChild(this.state.user).on('value', (snapshot) => {
       let obj = snapshot.val();
@@ -37,9 +41,13 @@ class App extends Component {
               userName: this.state.user,
               showName: obj[e].name
             };
-            localStorage.setItem('user', JSON.stringify(user));
+            sessionStorage.setItem('user', JSON.stringify(user));
             browserHistory.push('/dashboard');
-            window.location.reload;
+            window.location.reload();
+          } else {
+            this.setState({
+              invalidCredentials: true
+            });
           }
         }
       }
@@ -48,17 +56,13 @@ class App extends Component {
   render () {
     return (
       <div className='container-fluid login'>
-        <div className='loginForm col-md-3 pull-right'>
+        <div className='loginForm text-center'>
+          <img src={logo} alt="logo"/>
           <form>
-            <div className='form-group'>
-              <label htmlFor='user'>Usuario</label>
-              <input type='text' className='form-control' value={this.state.user} onChange={this.changeUser} id='user' placeholder='Nombre de Usuario' />
-            </div>
-            <div className='form-group'>
-              <label htmlFor='pass'>Password</label>
-              <input type='password' className='form-control' value={this.state.pass} onChange={this.changePass} id='pass' placeholder='Contraseña' />
-            </div>
-            <button type='button' className='btn btn-warning pull-right' onClick={this.submitForm}>Ingresar</button>
+            <input type='text' className='form-control' value={this.state.user} onChange={this.changeUser} id='user' placeholder='Nombre de Usuario' />
+            <input type='password' className='form-control' value={this.state.pass} onChange={this.changePass} id='pass' placeholder='Contraseña' />
+            {this.state.invalidCredentials ? <p>Usuario o contraseña incorrectos</p> : ''}
+            <button className='btn btn-block' onClick={this.submitForm}>Ingresar</button>
           </form>
         </div>
       </div>

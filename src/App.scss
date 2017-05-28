@@ -1,4 +1,4 @@
-@import "components/header/header";
-@import "components/login/login";
-@import "containers/menu/menu";
-@import "containers/modal/modal";
+@import 'views/components/header/header';
+@import 'views/containers/login/login';
+@import 'views/containers/itemList/menu';
+@import 'views/containers/modal/modal';
